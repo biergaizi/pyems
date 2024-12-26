@@ -84,7 +84,12 @@ def add_material(
         density=density,
     )
     if not color is None:
-        prop.SetColor(color, alpha)
+        try:
+            prop.SetColor(color, 255)
+            prop.SetColor(color, alpha)
+        except OverflowError:
+            # new API since CSXCAD v0.6.4
+            prop.SetColor(color, alpha / 255)
 
     return prop
 
